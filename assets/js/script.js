@@ -104,45 +104,46 @@ $(document).ready(function () {
         console.error("Failed to copy text: ", err);
       });
   });
+});
 
-  const form = document.getElementById("form");
-  const toasterContainer = document.getElementById("toasterContainer");
+const form = document.getElementById("form");
+const toasterContainer = document.getElementById("toasterContainer");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const object = Object.fromEntries(formData);
+  const json = JSON.stringify(object);
 
-    fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: json,
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: json,
+  })
+    .then(async (response) => {
+      let json = await response.json();
+      if (response.status == 200) {
+        showToaster("Message send successfully", "success");
+      } else {
+        showToaster(json.message, "error");
+      }
     })
-      .then(async (response) => {
-        let json = await response.json();
-        if (response.status == 200) {
-          showToaster("Message send successfully", "success");
-        } else {
-          showToaster(json.message, "error");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        showToaster("Something went wrong!", "error");
-      })
-      .then(() => {
-        form.reset();
-      });
-  });
+    .catch((error) => {
+      console.log(error);
+      showToaster("Something went wrong!", "error");
+    })
+    .then(() => {
+      form.reset();
+    });
+});
 
-  function showToaster(message, type) {
-    const toaster = document.createElement("div");
-    toaster.className = `toaster ${type}`;
-    toaster.innerHTML = `
+function showToaster(message, type) {
+  const toaster = document.createElement("div");
+  toaster.className = `toaster ${type}`;
+  toaster.innerHTML = `
   <div class="toaster-icon">
     ${
       type === "success"
@@ -166,17 +167,16 @@ $(document).ready(function () {
   <div class="toaster-progress"></div>
 `;
 
-    toasterContainer.appendChild(toaster);
+  toasterContainer.appendChild(toaster);
 
+  setTimeout(() => {
+    toaster.classList.add("show");
+  });
+
+  setTimeout(() => {
+    toaster.classList.remove("show");
     setTimeout(() => {
-      toaster.classList.add("show");
+      toasterContainer.removeChild(toaster);
     });
-
-    setTimeout(() => {
-      toaster.classList.remove("show");
-      setTimeout(() => {
-        toasterContainer.removeChild(toaster);
-      });
-    }, 3000);
-  }
-});
+  }, 3000);
+}

@@ -23,7 +23,18 @@
 
 </head>
 
-<body>
+<body onload="myFunction()">
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        var preloader = document.getElementById("preloader");
+
+        function myFunction() {
+            preloader.style.display = 'none'
+        }
+    </script>
     <!-- navbar -->
     <div class="scroll-up-btn">
         <i class="fas fa-angle-up"></i>
@@ -226,21 +237,6 @@
         </div>
         </div>
     </section>
-
-
-
-    <!-- <section id="services" class="services">
-        <div class="max-width">
-            <h2>Services</h2>
-            <ul>
-                <li>Video Editing</li>
-                <li>Color Grading</li>
-                <li>Motion Graphics</li>
-                <li>Sound Design</li>
-            </ul>
-        </div>
-    </section> -->
-
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="max-width">
@@ -311,6 +307,9 @@
                         <div id="toasterContainer" class="toaster-container"></div>
 
                     </form>
+                    <script>
+
+                    </script>
                 </div>
             </div>
         </div>
